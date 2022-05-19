@@ -53,10 +53,10 @@ class UserController{
 
         console.log(req.body)
 
-        const { id , name, email, role} = req.body;
+        const {id, email, name, role} = req.body;
 
         try{
-            var result = await User.update( id, name, email, role);
+            const result = await User.update( id, email, name, role);
 
             if(result != undefined){
                 if(result.status){
@@ -68,7 +68,7 @@ class UserController{
                 return res.status(406).send({error: "Ocorreu algum erro!"});
             } 
         }catch(err){
-            return res.status(400).send({error: err});
+            return res.status(400).send({error: "Ocorreu algum erro! 2"});
         }
     }
 
@@ -133,13 +133,13 @@ class UserController{
 
                 res.status(200).json({token: token})
             }else{
-                res.status(400).send("Invalid Password")
+                res.status(400).send({error: "Invalid Password"})
             }
 
             res.json({ status: result });
             
         }else{
-            res.json({ status: false});
+            res.status(400).send({ status: false, error: "User already exist"});
         }
     }
 

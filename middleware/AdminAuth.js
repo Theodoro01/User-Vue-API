@@ -4,9 +4,11 @@ const dotenv = require("dotenv").config();
 module.exports = function(req, res, next){
     const authToken = req.headers['authorization'];
 
+    console.log(authToken)
+    
     if(!authToken)
         return res.status(401).send({ error: 'No token provided'});
-
+    
     if(authToken != undefined){
 
         const bearer = authToken.split(" ");
@@ -22,17 +24,17 @@ module.exports = function(req, res, next){
             if(decoded.role == 1){
                 next();
             }else{
-                res.status(400).send("You do not have permission")
+                return res.status(400).send({error:"You do not have permission"})
             }
 
             console.log(decoded)
             next()
         }catch(err){
-            return res.status(400).send("Token invalid'");
+            return res.status(400).send({error: "Token invalid"});
         }
 
     }else{
-        res.status(400).send("Token invalid'");
+        return res.status(400).send({error: "Token invalid 2"});
     }
 
 }

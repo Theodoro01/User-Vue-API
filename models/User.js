@@ -39,7 +39,7 @@ class User{
     }
     async findById(id){
         try{
-            const result = await knex.select("id","name", "email", "role").where({id: id}).table("users");
+            const result = await knex.select("id","name","email",  "role").where({id: id}).table("users");
            if(result.length > 0){
                return result[0];
            }else{
@@ -79,13 +79,13 @@ class User{
 
             try{
                 await knex.update(editUser).where({id: id}).table("users");
-                return res.status(200);
+                return {status: true};
             }catch(err){
                 return res.status(400).send({Error: err});
             }
 
         }else{
-            return res.status(404).send({Error: "User not found"});
+            return { status: false ,Error: "User not found"};
         }
     }
     async delete(id){
